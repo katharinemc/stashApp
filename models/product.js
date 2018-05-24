@@ -2,16 +2,40 @@
 
 const mongoose = require('mongoose');
 
+
 const productSchema = mongoose.Schema({
-  name: { type: String, unique: true },
-  brand: { type: String },
+  name: { type: String,  required: true},
+  brand: { type: String,  required: true  },
   shade: { type: String },
+  notes: { type: String },
+  looksId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'productCollection'}],
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 }, { timestamps: true });
 
 
-//name, brand, shade keys must be unique
-productSchema.index({ name: 1, userId: 1}, { unique: true });
+productSchema.index({ name: 1, brand: 1, shade: 1, userId: 1}, { unique: true });
+
+
+productSchema.pre('save', function (next) {
+  console.log('pre save happening');
+  const query = {
+    name: this.name,
+    brand: this.brand,
+    shade: this.shade,
+    userId: this.userId
+  };
+
+  this.constructor.find(query)
+    .then(result => {
+      console.log(result);
+      next();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+
 
 productSchema.set('toObject', {
   transform: function (doc, ret) {

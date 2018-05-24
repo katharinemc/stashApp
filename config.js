@@ -2,7 +2,7 @@
 
 exports.PORT = process.env.PORT || 8080;
 
-exports.MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/noteful';
+exports.MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/stashApp';
 
-exports.TEST_MONGODB_URI = process.env.TEST_MONGODB_URI || 'mongodb://localhost/noteful-test';
+exports.TEST_MONGODB_URI = process.env.TEST_MONGODB_URI || 'mongodb://localhost/stashApp-test';
 

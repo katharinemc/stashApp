@@ -1,11 +1,9 @@
 STASH APP USER STORIES
-
-
-
 User can register & log-in
-Once logged in, user can create a new product w/ brand, category, name, shade information + notes. Can edit. Can delete.
+Once logged in, user can create a new product w/ brand, category, name, shade information + notes. Can edit. Can delete.  Cannot add two products with identical brand, name, and shade.
 Can view all products or filter by brand/category/shade.
-User can add products to "Look" collection of multiple products w/ name.  Looks are categorized by day/night and can be searched by string
+User can add products to "Look" collection of multiple products w/ name.  Looks can be searched by string
 
 
 Public can view but not edit or add users products and looks
+

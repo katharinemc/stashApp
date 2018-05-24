@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const { PORT, MONGODB_URI } = require('./config');
+const productsRouter = require('./routes/products');
+const usersRouter = require('./routes/users');
 
 // Create an Express application
 const app = express();
@@ -22,7 +24,11 @@ app.use(express.static('public'));
 // Parse request body
 app.use(express.json());
 
+console.log('hello');
+
 // Mount routers
+app.use('/api/products', productsRouter);
+app.use('/api/users', usersRouter);
 
 // Catch-all 404
 
