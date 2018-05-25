@@ -20,20 +20,26 @@ router.get('/', (req, res, next) => {
     });
 });
 
+router.get('/:id', (req, res, next) => {
+  const {id } =req.params;
+  User.findById(id)
+    .then(results => {
+      res.json(results);
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
+
 /* ========== POST ITEMS ========== */
 
 router.post('/', (req, res, next) => {
   const { userName } = req.body;
 
-console.log(req.body);
   const obj = {
     userName
   };
-
-
-
-console.log(obj)
-
 
   User.create(obj)
     .then(results => {
@@ -44,6 +50,18 @@ console.log(obj)
     });
 });
 
+/* ========== DELETE ITEMS ========== */
+router.delete('/:id', (req, res, next) => {
+  const { id } = req.body;
+
+  User.findByIdAndRemove(id)
+    .then (results => {
+      res.json(results);
+    })
+    .catch(err => {
+      next(err);
+    });
+});
 
 
 module.exports = router;
