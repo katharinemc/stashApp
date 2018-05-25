@@ -3,13 +3,12 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const User = require('../models/user');
-
+const Look = require('../models/look');
 
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/', (req, res, next) => {
 
-  User.find()
+  Look.find()
     .then(results => {
       res.json(results);
     })
@@ -17,10 +16,10 @@ router.get('/', (req, res, next) => {
       next(err);
     });
 });
-
+  
 router.get('/:id', (req, res, next) => {
   const {id } =req.params;
-  User.findById(id)
+  Look.findById(id)
     .then(results => {
       res.json(results);
     })
@@ -28,18 +27,18 @@ router.get('/:id', (req, res, next) => {
       next(err);
     });
 });
-
-
+  
+  
 /* ========== POST ITEMS ========== */
-
+  
 router.post('/', (req, res, next) => {
-  const { userName } = req.body;
-
+  const { name } = req.body;
+  
   const obj = {
-    userName
+    name
   };
-
-  User.create(obj)
+  
+  Look.create(obj)
     .then(results => {
       res.json(results);
     })
@@ -47,12 +46,12 @@ router.post('/', (req, res, next) => {
       next(err);
     });
 });
-
+  
 /* ========== DELETE ITEMS ========== */
 router.delete('/:id', (req, res, next) => {
   const { id } = req.body;
-
-  User.findByIdAndRemove(id)
+  
+  Look.findByIdAndRemove(id)
     .then (results => {
       res.json(results);
     })
@@ -60,6 +59,26 @@ router.delete('/:id', (req, res, next) => {
       next(err);
     });
 });
+
+/* ========== PUT ITEMS ========== */
+router.put('/:id', (req, res, next) => {
+  const { id } = req.params;
+  const {name} = req.body;
+    
+  const updateObj = {
+    name
+  };
+
+  Look.findByIdAndUpdate(id, updateObj, {new: true})
+    .then (results => {
+      res.json(results);
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+  
+  
 
 
 module.exports = router;

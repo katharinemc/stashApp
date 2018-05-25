@@ -4,10 +4,13 @@ const mongoose = require('mongoose');
 
 const { MONGODB_URI } = require('../config');
 const Product = require('../models/product');
-const User = require('../models/User');
+const User = require('../models/user');
+const Look = require('../models/look');
 
 const seedProducts = require('../db/seed/products');
 const seedUsers = require('../db/seed/users');  
+
+const seedLooks = require('../db/seed/looks');  
 
 mongoose.connect(MONGODB_URI)
   .then(() => mongoose.connection.db.dropDatabase())
@@ -15,6 +18,7 @@ mongoose.connect(MONGODB_URI)
     return Promise.all([
      
       Product.insertMany(seedProducts),
+      Look.insertMany(seedLooks),
     
       User.insertMany(seedUsers)
 

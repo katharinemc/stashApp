@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const { PORT, MONGODB_URI } = require('./config');
 const productsRouter = require('./routes/products');
 const usersRouter = require('./routes/users');
+const looksRouter = require('./routes/looks');
 
 // Create an Express application
 const app = express();
@@ -29,6 +30,7 @@ console.log('hello');
 // Mount routers
 app.use('/api/products', productsRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/looks', looksRouter);
 
 // Catch-all 404
 
