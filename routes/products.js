@@ -20,25 +20,30 @@ router.get('/', (req, res, next) => {
     });
 });
 
+router.get('/:id', (req, res, next) => {
+const {id } =req.params;
+console.log (req.params)
+  Product.findById(id)
+    .then(results => {
+      res.json(results);
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
 /* ========== POST ITEMS ========== */
 
 router.post('/', (req, res, next) => {
-  const {brand, name, shade, userId} = req.body;
+  const {brand, name, shade, category, userId} = req.body;
 
   const obj = {
     brand,
-    name, 
+    name,
+    category, 
     shade, 
     userId
   };
-
-//   "brand" :"maybelline",
-//     "name" : "fancy product", 
-//   "shade": "green",
-//   "userId" : "5b07429cbdfaa3407e5be438"
-
-
-
 
   Product.create(obj)
     .then(results => {
@@ -49,6 +54,39 @@ router.post('/', (req, res, next) => {
     });
 });
 
+/* ========== UPDATE ITEMS ========== */
+router.put('/:id', (req, res, next) => {
+  const {brand, name, shade, category} = req.body;
+  const { id } = req.params;
+  const updateObj = {
+    brand,
+    name,
+    category, 
+    shade, 
+  };
+
+  Product.findByIdAndUpdate(id, updateObj, {new: true})
+    .then (results => {
+      res.json(results);
+    })
+    .catch(err => {
+      next(err);
+    });
+
+});
+
+/* ========== DELETE ITEMS ========== */
+router.delete('/:id', (req, res, next) => {
+  const { id } = req.body;
+
+  Product.findByIdAndRemove(id)
+    .then (results => {
+      res.json(results);
+    })
+    .catch(err => {
+      next(err);
+    });
+});
 
 
 module.exports = router;

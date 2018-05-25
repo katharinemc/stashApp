@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const productSchema = mongoose.Schema({
   name: { type: String,  required: true},
   brand: { type: String,  required: true  },
+  category: {type: String, required: true },
   shade: { type: String },
   notes: { type: String },
   looksId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'productCollection'}],
@@ -13,7 +14,7 @@ const productSchema = mongoose.Schema({
 }, { timestamps: true });
 
 
-productSchema.index({ name: 1, brand: 1, shade: 1, userId: 1}, { unique: true });
+productSchema.index({ name: 1, brand: 1, shade: 1, category: 1, userId: 1}, { unique: true });
 
 
 productSchema.pre('save', function (next) {
@@ -22,6 +23,7 @@ productSchema.pre('save', function (next) {
     name: this.name,
     brand: this.brand,
     shade: this.shade,
+    category: this.category,
     userId: this.userId
   };
 

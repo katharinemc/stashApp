@@ -23,15 +23,16 @@ router.get('/', (req, res, next) => {
 /* ========== POST ITEMS ========== */
 
 router.post('/', (req, res, next) => {
-  const {userName} = req.body;
+  const { userName } = req.body;
 
+console.log(req.body);
   const obj = {
-userName
+    userName
   };
 
 
 
-
+console.log(obj)
 
 
   User.create(obj)

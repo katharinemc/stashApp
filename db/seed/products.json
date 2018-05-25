@@ -1,0 +1,35 @@
+
+[
+  {
+    "_id": "111111111111111111111100",
+    "brand": "Maybelline",
+    "category" : "blush",
+    "name": "not so fancy",
+    "shade": "peach",
+    "userId": "333333333333333333333300"
+  },
+  {
+    "_id": "111111111111111111111109",
+    "brand": "Lancome",
+    "category" : "lipstick",
+    "name": " so fancy",
+    "shade": "red",
+    "userId": "333333333333333333333300"
+  },
+  {
+    "_id": "111111111111111111111101",
+    "brand": "Maybelline",
+    "category" : "blush",
+    "name": "not so fancy",
+    "shade": "peach",
+    "userId": "333333333333333333333301"
+  },
+  {
+    "_id": "111111111111111111111108",
+    "brand": "Laura Mercier",
+    "category" : "face",
+    "name": "secret camoflage",
+    "shade": "porcelain",
+    "userId": "333333333333333333333302"
+  }
+]
