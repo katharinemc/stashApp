@@ -2,19 +2,19 @@
   {
     "_id": "333333333333333333333300",
     "userEmail": "1234@gmail.com",
-    "userName": "Katharine",
+    "username": "Katharine",
     "password": "password"
   },
   {
     "_id": "333333333333333333333301",
     "userEmail": "abcd@aol.com",
-    "userName": "Margaret",
+    "username": "Margaret",
     "password": "passwordpassword"
   },
   {
     "_id": "333333333333333333333302",
     "userEmail": "rstl@yahoo.com",
-    "userName": "Cecilia",
+    "username": "Cecilia",
     "password": "password"
   }
 ]

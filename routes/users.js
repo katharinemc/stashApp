@@ -8,18 +8,18 @@ const passport = require('passport');
 const { Strategy: LocalStrategy } = require('passport-local');
 
 // ===== Define and create basicStrategy =====
-const localStrategy = new LocalStrategy((userName, password, done) => {
+const localStrategy = new LocalStrategy((username, password, done) => {
   let user;
   User
-    .findOne({ userName })
+    .findOne({ username })
     .then(results => {
       user = results;    
       
       if (!user) {
         return Promise.reject({
           reason: 'LoginError',
-          message: 'Incorrect userName',
-          location: 'userName'
+          message: 'Incorrect username',
+          location: 'username'
         });
       }    
     
@@ -76,7 +76,7 @@ router.get('/:id', (req, res, next) => {
 /* ========== POST ITEMS ========== */
 
 router.post('/', (req, res, next) => {
-  const { userName, userEmail, password } = req.body;
+  const { username, userEmail, password } = req.body;
 
   return User.find({userEmail})
     .count()
@@ -90,7 +90,7 @@ router.post('/', (req, res, next) => {
         });
       } 
       else {
-        return User.find({userName})
+        return User.find({username})
           .count();
       }})    
     .then( count => {
@@ -98,14 +98,14 @@ router.post('/', (req, res, next) => {
         return Promise.reject({
           code: 422,
           reason: 'ValidationError',
-          message: 'userName already in use',
-          location: 'userName'
+          message: 'username already in use',
+          location: 'username'
         });}
       return User.hashPassword(password);
     })
     .then (digest => {
       return User.create( {
-        userName,
+        username,
         password: digest,
         userEmail
       });
@@ -134,7 +134,7 @@ const localAuth = passport.authenticate('local', { session: false });
 
 // ===== Protected endpoint =====
 router.post('/login', localAuth, function (req, res) {
-  console.log(`${req.user.userName} successfully logged in.`);
+  console.log(`${req.user.username} successfully logged in.`);
   return res.json({ data: 'rosebud' });
 }); 
 
