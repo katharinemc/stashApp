@@ -13,24 +13,21 @@ const localAuth = passport.authenticate('local', options);
 
 
 function createAuthToken (user) {
-  console.log('auth token', user);
   return jwt.sign({ user }, JWT_SECRET, {
     subject: user.username,
     expiresIn: JWT_EXPIRY
   });
 }
 
-
-
 router.post('/login', localAuth, function (req, res) {
-  console.log('welcome to auth');
   const authToken = createAuthToken(req.body);
   return res.json({authToken});
 });
+const jwtAuth = passport.authenticate('jwt', { session: false, failWithError: true });
 
-// function makeSandwich() {
-//   // console.log('here is a sandwich', req);
-//   console.log(localAuth('foobar'));
-// }
+router.post('/refresh', jwtAuth, (req, res) => {
+  const authToken = createAuthToken(req.user);
+  res.json({ authToken });
+});
 
 module.exports = router;

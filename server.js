@@ -10,6 +10,7 @@ const productsRouter = require('./routes/products');
 const usersRouter = require('./routes/users');
 const looksRouter = require('./routes/looks');
 const authRouter = require('./routes/auth');
+const publicRouter = require('./routes/public');
 
 const passport = require('passport');
 const localStrategy = require('./passport/local');
@@ -46,6 +47,7 @@ app.use(express.json());
 
 // Mount routers
 app.use('/api', authRouter);
+app.use('/api/public', publicRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/looks', looksRouter);

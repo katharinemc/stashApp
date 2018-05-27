@@ -3,12 +3,19 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
+const passport = require('passport');
+
+
+router.use('/', passport.authenticate('jwt', { session: false, failWithError: true }));
 
 
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/', (req, res, next) => {
+  const userId = req.user.id;
 
-  Product.find()
+  let filter ={ userId};
+
+  Product.find(filter)
     .then(results => {
       res.json(results);
     })
@@ -19,7 +26,9 @@ router.get('/', (req, res, next) => {
 
 router.get('/:id', (req, res, next) => {
   const {id } =req.params;
-  Product.findById(id)
+  const userId = req.user.id;
+
+  Product.findOne({ _id: id, userId })
     .then(results => {
       res.json(results);
     })
@@ -31,8 +40,8 @@ router.get('/:id', (req, res, next) => {
 /* ========== POST ITEMS ========== */
 
 router.post('/', (req, res, next) => {
-  const {brand, name, shade, category, userId} = req.body;
-
+  const {brand, name, shade, category} = req.body;
+  const userId = req.user.id;
   const obj = {
     brand,
     name,
@@ -54,11 +63,13 @@ router.post('/', (req, res, next) => {
 router.put('/:id', (req, res, next) => {
   const {brand, name, shade, category} = req.body;
   const { id } = req.params;
+  const userId = req.user.id;
   const updateObj = {
     brand,
     name,
     category, 
     shade, 
+    userId
   };
 
   Product.findByIdAndUpdate(id, updateObj, {new: true})
@@ -74,8 +85,9 @@ router.put('/:id', (req, res, next) => {
 /* ========== DELETE ITEMS ========== */
 router.delete('/:id', (req, res, next) => {
   const { id } = req.body;
+  const userId = req.user.id;
 
-  Product.findByIdAndRemove(id)
+  Product.findOneAndRemove({_id:id, userId})
     .then (results => {
       res.json(results);
     })
