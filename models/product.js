@@ -17,7 +17,6 @@ const productSchema = mongoose.Schema({
 productSchema.index({ name: 1, brand: 1, shade: 1, category: 1, userId: 1}, { unique: true });
 
 productSchema.pre('save', function (next) {
-  console.log('pre save happening');
   const query = {
     name: this.name,
     brand: this.brand,

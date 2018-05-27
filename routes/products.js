@@ -2,11 +2,8 @@
 
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const Product = require('../models/product');
 
-
-console.log('I route!');
 
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/', (req, res, next) => {
@@ -21,8 +18,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-const {id } =req.params;
-console.log (req.params)
+  const {id } =req.params;
   Product.findById(id)
     .then(results => {
       res.json(results);

@@ -28,7 +28,7 @@ mongoose.connect(MONGODB_URI)
     //       .then(hash => {
     //         const newUser = {
     //           permid: user._id,
-    //           username: user.username,
+    //           userName: user.userName,
     //           password: hash,
     //           fullname: user.fullname
     //         };

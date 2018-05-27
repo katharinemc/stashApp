@@ -2,9 +2,50 @@
 
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const User = require('../models/user');
 
+const passport = require('passport');
+const { Strategy: LocalStrategy } = require('passport-local');
+
+// ===== Define and create basicStrategy =====
+const localStrategy = new LocalStrategy((userName, password, done) => {
+  let user;
+  User
+    .findOne({ userName })
+    .then(results => {
+      user = results;    
+      
+      if (!user) {
+        return Promise.reject({
+          reason: 'LoginError',
+          message: 'Incorrect userName',
+          location: 'userName'
+        });
+      }    
+    
+      return user.validatePassword(password);
+    })
+    .then(isValid => {
+      if (!isValid) {
+        return Promise.reject({
+          reason: 'LoginError',
+          message: 'Incorrect password',
+          location: 'password'
+        });
+      }
+      return done(null, user);    
+    })
+    .catch(err => {
+      if (err.reason === 'LoginError') {
+        return done(null, false);
+      }
+
+      return done(err);
+
+    });
+});
+
+passport.use(localStrategy);
 
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/', (req, res, next) => {
@@ -18,6 +59,8 @@ router.get('/', (req, res, next) => {
     });
 });
 
+
+// GET by ID //
 router.get('/:id', (req, res, next) => {
   const {id } =req.params;
   User.findById(id)
@@ -33,19 +76,45 @@ router.get('/:id', (req, res, next) => {
 /* ========== POST ITEMS ========== */
 
 router.post('/', (req, res, next) => {
-  const { userName } = req.body;
+  const { userName, userEmail, password } = req.body;
 
-  const obj = {
-    userName
-  };
-
-  User.create(obj)
-    .then(results => {
-      res.json(results);
+  return User.find({userEmail})
+    .count()
+    .then( count => {
+      if (count > 0) {
+        return Promise.reject({
+          code: 422,
+          reason: 'ValidationError',
+          message: 'Email already in use',
+          location: 'userEmail'
+        });
+      } 
+      else {
+        return User.find({userName})
+          .count();
+      }})    
+    .then( count => {
+      if (count > 0) {
+        return Promise.reject({
+          code: 422,
+          reason: 'ValidationError',
+          message: 'userName already in use',
+          location: 'userName'
+        });}
+      return User.hashPassword(password);
     })
-    .catch(err => {
-      next(err);
+    .then (digest => {
+      return User.create( {
+        userName,
+        password: digest,
+        userEmail
+      });
+    })
+    .then (user => {
+      return res.status(201).json(user);
     });
+    
+
 });
 
 /* ========== DELETE ITEMS ========== */
@@ -60,6 +129,14 @@ router.delete('/:id', (req, res, next) => {
       next(err);
     });
 });
+
+const localAuth = passport.authenticate('local', { session: false });
+
+// ===== Protected endpoint =====
+router.post('/login', localAuth, function (req, res) {
+  console.log(`${req.user.userName} successfully logged in.`);
+  return res.json({ data: 'rosebud' });
+}); 
 
 
 module.exports = router;

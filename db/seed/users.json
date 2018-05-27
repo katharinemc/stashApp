@@ -1,19 +1,19 @@
 [
   {
     "_id": "333333333333333333333300",
-    "fullname": "User Zero",
+    "userEmail": "1234@gmail.com",
     "userName": "Katharine",
     "password": "password"
   },
   {
     "_id": "333333333333333333333301",
-    "fullname": "User One",
+    "userEmail": "abcd@aol.com",
     "userName": "Margaret",
     "password": "passwordpassword"
   },
   {
     "_id": "333333333333333333333302",
-    "fullname": "User Two",
+    "userEmail": "rstl@yahoo.com",
     "userName": "Cecilia",
     "password": "password"
   }

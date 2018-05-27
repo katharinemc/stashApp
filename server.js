@@ -3,11 +3,19 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
-const { PORT, MONGODB_URI } = require('./config');
+const { PORT, MONGODB_URI, CLIENT_ORIGIN } = require('./config');
 const productsRouter = require('./routes/products');
 const usersRouter = require('./routes/users');
 const looksRouter = require('./routes/looks');
+const authRouter = require('./routes/auth');
+
+const passport = require('passport');
+const localStrategy = require('./passport/local');
+const jwtStrategy = require('./passport/jwt');
+
+
 
 // Create an Express application
 const app = express();
@@ -19,15 +27,25 @@ app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'common', {
   skip: () => process.env.NODE_ENV === 'test'
 }));
 
+app.use(
+  cors({
+    origin: CLIENT_ORIGIN
+  })
+);
+
+
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+
+
 // Create a static webserver
 app.use(express.static('public'));
 
 // Parse request body
 app.use(express.json());
 
-console.log('hello');
-
 // Mount routers
+app.use('/api', authRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/looks', looksRouter);
