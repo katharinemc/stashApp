@@ -15,6 +15,7 @@ const options = {
 
  
 const jwtStrategy = new JwtStrategy(options, (payload, done) => {
+  console.log('jwtStrategy', payload);
   done(null, payload.user);
 }); 
 

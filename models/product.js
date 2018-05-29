@@ -11,6 +11,7 @@ const productSchema = mongoose.Schema({
   notes: { type: String },
   looksId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'productCollection'}],
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+
 }, { timestamps: true });
 
 
@@ -27,7 +28,7 @@ productSchema.pre('save', function (next) {
 
   this.constructor.find(query)
     .then(result => {
-      console.log(result);
+      // console.log(result);
       next();
     })
     .catch((err) => {

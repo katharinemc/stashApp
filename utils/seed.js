@@ -15,28 +15,28 @@ const seedLooks = require('../db/seed/looks');
 mongoose.connect(MONGODB_URI)
   .then(() => mongoose.connection.db.dropDatabase())
   .then(() => {
+    console.log(seedProducts);
     return Promise.all([
-     
+   
       Product.insertMany(seedProducts),
-      Look.insertMany(seedLooks),
-    
-      User.insertMany(seedUsers)
+      Look.insertMany(seedLooks),    
 
-
-    //   Promise.all(seedUsers.map(user => {
-    //     return User.hashPassword(user.password)
-    //       .then(hash => {
-    //         const newUser = {
-    //           permid: user._id,
-    //           username: user.username,
-    //           password: hash,
-    //           fullname: user.fullname
-    //         };
-    //         return User.create(newUser)
-    //         .then ( () => {
-    //           return User.createIndexes()
-    //         })
-    //       });})),
+      Promise.all(seedUsers.map(user => {
+        console.log(user._id);
+        return User.hashPassword(user.password)
+          .then(hash => {
+            const newUser = {
+              _id: user._id,
+              username: user.username,
+              password: hash,
+              userEmail: user.userEmail
+            };
+            console.log(newUser);
+            return User.insertMany(newUser);
+              // .then ( () => {
+              //   return User.createIndexes();
+              // });
+          });})),
 
       
     ]);

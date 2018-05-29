@@ -4,16 +4,18 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
 const passport = require('passport');
+const jwtStrategy = require('../passport/jwt');
+const User = require('../models/user');
 
 
 router.use('/', passport.authenticate('jwt', { session: false, failWithError: true }));
 
-
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/', (req, res, next) => {
-  const userId = req.user.id;
 
-  let filter ={ userId};
+  const username = req.user.username;
+  const userId = '333333333333333333333300';
+  let filter ={userId};
 
   Product.find(filter)
     .then(results => {
@@ -40,17 +42,28 @@ router.get('/:id', (req, res, next) => {
 /* ========== POST ITEMS ========== */
 
 router.post('/', (req, res, next) => {
-  const {brand, name, shade, category} = req.body;
-  const userId = req.user.id;
-  const obj = {
-    brand,
-    name,
-    category, 
-    shade, 
-    userId
-  };
+  const {brand, name, shade, username, category} = req.body;
+  let userId;
 
-  Product.create(obj)
+  console.log(username)
+  User.find({username})
+    .then ( (results) => {
+      console.log(results[0].id);
+     return userId = results[0].id;
+    }) 
+    .then ((userId) => {
+      console.log(userId);
+      const obj = {
+        brand,
+        name,
+        category, 
+        shade, 
+        userId
+      };
+      console.log('postpbj', obj);
+      return   Product.create(obj);
+
+    })
     .then(results => {
       res.json(results);
     })

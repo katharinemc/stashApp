@@ -34,7 +34,7 @@ app.use(
   })
 );
 
-
+console.log('about to authenticate')
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
