@@ -2,13 +2,26 @@
 
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
+const passport = require('passport');
+const jwtStrategy = require('../passport/jwt');
+const User = require('../models/user');
+
 const Look = require('../models/look');
+
+router.use('/', passport.authenticate('jwt', { session: false, failWithError: true }));
+
 
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/', (req, res, next) => {
-
-  Look.find()
+  const username = req.user.username;
+  let filter ={username};
+  let userId;
+  User.find({username})
+    .then ( (results) => {
+      return userId = results[0].id;
+    })
+    .then ( userId => {
+      return  Look.find({userId}); })
     .then(results => {
       res.json(results);
     })
