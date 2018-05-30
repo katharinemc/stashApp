@@ -17,12 +17,14 @@ router.get('/', (req, res, next) => {
   let filter ={username};
   let userId;
   User.find({username})
+    .populate('products')
     .then ( (results) => {
       return userId = results[0].id;
     })
     .then ( userId => {
       return  Look.find({userId}); })
     .then(results => {
+      console.log(results);
       res.json(results);
     })
     .catch(err => {
