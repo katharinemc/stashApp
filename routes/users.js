@@ -3,8 +3,13 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
+const jwt = require('jsonwebtoken');
 
 const passport = require('passport');
+const options = {session: false, failWithError: true};
+
+const { JWT_SECRET, JWT_EXPIRY} = require('../config');
+
 const { Strategy: LocalStrategy } = require('passport-local');
 
 // ===== Define and create basicStrategy =====
@@ -111,11 +116,18 @@ router.post('/', (req, res, next) => {
       });
     })
     .then (user => {
-      return res.status(201).json(user);
-    });
-    
-
+      function createAuthToken (user) {
+        return jwt.sign({ user }, JWT_SECRET, {
+          subject: user.username,
+          expiresIn: JWT_EXPIRY
+        });
+      }
+      const authToken = createAuthToken({username, password});
+      return res.json({authToken});
+    })
+    .then (res => console.log(res));
 });
+
 
 /* ========== DELETE ITEMS ========== */
 router.delete('/:id', (req, res, next) => {

@@ -13,6 +13,7 @@ const localAuth = passport.authenticate('local', options);
 
 
 function createAuthToken (user) {
+  console.log('authtoken value is', user)
   return jwt.sign({ user }, JWT_SECRET, {
     subject: user.username,
     expiresIn: JWT_EXPIRY

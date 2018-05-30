@@ -45,8 +45,9 @@ router.post('/', (req, res, next) => {
   const {brand, name, shade, username, category} = req.body;
   let userId;
 
-  console.log(username)
-  User.find({username})
+console.log('logging req body user', req.user);
+
+  User.find({username:req.user.username})
     .then ( (results) => {
       console.log(results[0].id);
      return userId = results[0].id;
@@ -65,7 +66,8 @@ router.post('/', (req, res, next) => {
 
     })
     .then(results => {
-      res.json(results);
+      console.log(results);
+     return res.json(results);
     })
     .catch(err => {
       next(err);
