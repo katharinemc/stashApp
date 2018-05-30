@@ -9,6 +9,7 @@ const User = require('../models/user');
 
 
 router.use('/', passport.authenticate('jwt', { session: false, failWithError: true }));
+console.log('successfully authd');
 
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/', (req, res, next) => {
@@ -33,9 +34,14 @@ router.get('/', (req, res, next) => {
 
 router.get('/:id', (req, res, next) => {
   const {id } =req.params;
-  const userId = req.user.id;
-
-  Product.findOne({ _id: id, userId })
+  const username = req.user.username;
+  let userId;
+  User.find({username})
+    .then ( (results) => {
+      return userId = results[0].id;
+    })
+    .then ( userId => {
+      return Product.findOne({ _id: id, userId}); })
     .then(results => {
       res.json(results);
     })
@@ -104,10 +110,18 @@ router.put('/:id', (req, res, next) => {
 
 /* ========== DELETE ITEMS ========== */
 router.delete('/:id', (req, res, next) => {
-  const { id } = req.body;
-  const userId = req.user.id;
+console.log(req.params, req.user)
+  const { id } = req.params;
+  const username = req.user.username;
+  let userId;
 
-  Product.findOneAndRemove({_id:id, userId})
+console.log('delete', username, id)
+  User.find({username})
+    .then ( (results) => {
+      return userId = results[0].id;
+    })
+    .then ( userId => {
+      return  Product.findOneAndRemove({_id:id, userId});})
     .then (results => {
       res.json(results);
     })

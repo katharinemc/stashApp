@@ -34,7 +34,8 @@ router.get('/', (req, res, next) => {
   
 router.get('/:id', (req, res, next) => {
   const {id } =req.params;
-  Look.findById(id)
+  console.log('inside get by id', id)
+  Look.findById({id})
     .then(results => {
       res.json(results);
     })
