@@ -14,10 +14,15 @@ router.use('/', passport.authenticate('jwt', { session: false, failWithError: tr
 router.get('/', (req, res, next) => {
 
   const username = req.user.username;
-  const userId = '333333333333333333333300';
-  let filter ={userId};
-
-  Product.find(filter)
+  let filter ={username};
+  let userId;
+  User.find({username})
+    .then ( (results) => {
+      return userId = results[0].id;
+    })
+    .then ( userId => {
+      return Product.find({userId});
+    })
     .then(results => {
       res.json(results);
     })
@@ -45,12 +50,12 @@ router.post('/', (req, res, next) => {
   const {brand, name, shade, username, category} = req.body;
   let userId;
 
-console.log('logging req body user', req.user);
+  console.log('logging req body user', req.user);
 
   User.find({username:req.user.username})
     .then ( (results) => {
       console.log(results[0].id);
-     return userId = results[0].id;
+      return userId = results[0].id;
     }) 
     .then ((userId) => {
       console.log(userId);
@@ -67,7 +72,7 @@ console.log('logging req body user', req.user);
     })
     .then(results => {
       console.log(results);
-     return res.json(results);
+      return res.json(results);
     })
     .catch(err => {
       next(err);
