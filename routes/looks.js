@@ -17,14 +17,14 @@ router.get('/', (req, res, next) => {
   let filter ={username};
   let userId;
   User.find({username})
-    .populate('products')
     .then ( (results) => {
       return userId = results[0].id;
     })
     .then ( userId => {
-      return  Look.find({userId}); })
+      return  Look.find({userId})
+        .populate('products'); })
     .then(results => {
-      console.log(results);
+      console.log(results[1]);
       res.json(results);
     })
     .catch(err => {
@@ -34,7 +34,7 @@ router.get('/', (req, res, next) => {
   
 router.get('/:id', (req, res, next) => {
   const {id } =req.params;
-  console.log('inside get by id', id)
+  console.log('inside get by id', id);
   Look.findById({id})
     .then(results => {
       res.json(results);
@@ -48,13 +48,22 @@ router.get('/:id', (req, res, next) => {
 /* ========== POST ITEMS ========== */
   
 router.post('/', (req, res, next) => {
-  const { name } = req.body;
-  
-  const obj = {
-    name
-  };
-  
-  Look.create(obj)
+  const { name, products } = req.body;
+  const username = req.user.username;
+  let userId;
+
+  console.log('post username', username)
+  User.find({username})
+    .then ( (results) => {
+      return userId = results[0].id;
+    })
+    .then ( userId => {
+      const obj = {
+        userId, name, products
+      };
+      console.log('post', obj)
+
+      return Look.create(obj); })
     .then(results => {
       res.json(results);
     })

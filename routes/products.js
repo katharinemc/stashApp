@@ -122,8 +122,8 @@ console.log('delete', username, id)
     })
     .then ( userId => {
       return  Product.findOneAndRemove({_id:id, userId});})
-    .then (results => {
-      res.json(results);
+    .then ( (results) => {
+      res.status(204).end();
     })
     .catch(err => {
       next(err);

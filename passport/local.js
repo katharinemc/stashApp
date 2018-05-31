@@ -6,10 +6,9 @@ const User = require('../models/user');
 // ===== Define and create basicStrategy =====
 const localStrategy = new LocalStrategy((username, password, done) => {
   let user;
-  console.log('insite local strat');
   User.findOne({ username })
     .then(results => {
-      console.log('first then', results);
+
       user = results;
       if (!user) {
         return Promise.reject({
@@ -21,7 +20,7 @@ const localStrategy = new LocalStrategy((username, password, done) => {
       return user.validatePassword(password);
     })
     .then(isValid => {
-      console.log('second then');
+
       if (!isValid) {
         return Promise.reject({
           reason: 'LoginError',
