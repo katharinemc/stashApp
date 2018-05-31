@@ -5,10 +5,11 @@ const User = require('../models/user');
 
 // ===== Define and create basicStrategy =====
 const localStrategy = new LocalStrategy((username, password, done) => {
+  console.log('in local');
   let user;
   User.findOne({ username })
     .then(results => {
-
+console.log('find one', results);
       user = results;
       if (!user) {
         return Promise.reject({
@@ -31,9 +32,6 @@ const localStrategy = new LocalStrategy((username, password, done) => {
       return done(null, user);
     })
     .catch(err => {
-      if (err.reason === 'LoginError') {
-        return done(null, false);
-      }
       return done(err);
     });
 });
