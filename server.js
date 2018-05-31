@@ -52,9 +52,23 @@ app.use('/api/users', usersRouter);
 app.use('/api/looks', looksRouter);
 
 // Catch-all 404
+app.use(function (req, res, next) {
+  console.log('hey, an error!')
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
 // Catch-all Error handler
 // Add NODE_ENV check to prevent stacktrace leak
+app.use(function (err, req, res, next) {
+  console.log('hey, a bad error!');
+  res.status(err.status || 500);
+  res.json({
+    message: err.message,
+    error: app.get('env') === 'development' ? err : {}
+  });
+});
 
 // Listen for incoming connections
 if (require.main === module) {

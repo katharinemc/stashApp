@@ -83,12 +83,14 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   const { username, userEmail, password } = req.body;
 
+
+  //TODO - COMBINE FIND REQUESTS
   return User.find({userEmail})
     .count()
     .then( count => {
       if (count > 0) {
         return Promise.reject({
-          code: 422,
+          status: 422,
           reason: 'ValidationError',
           message: 'Email already in use',
           location: 'userEmail'
@@ -101,7 +103,7 @@ router.post('/', (req, res, next) => {
     .then( count => {
       if (count > 0) {
         return Promise.reject({
-          code: 422,
+          status: 422,
           reason: 'ValidationError',
           message: 'username already in use',
           location: 'username'
@@ -122,10 +124,14 @@ router.post('/', (req, res, next) => {
           expiresIn: JWT_EXPIRY
         });
       }
-      const authToken = createAuthToken({username, password});
+      const authToken = createAuthToken({username});
       return res.json({authToken});
     })
-    .then (res => console.log(res));
+    .then (res => console.log(res))
+    .catch (err => {
+      console.log('is this the err?', err);
+      next(err);
+    });
 });
 
 
