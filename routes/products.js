@@ -8,11 +8,33 @@ const jwtStrategy = require('../passport/jwt');
 const User = require('../models/user');
 
 
+router.get('/:id', (req, res, next) => {
+  console.log('did the call get made?');
+  const username  =req.params.id;
+let userId;
+
+console.log(username, req.params)
+  User.find({username})
+    .then ( (results) => {
+      console.log(results);
+      return userId = results[0].id;
+    })
+    .then ( userId => {
+      return Product.find({userId}); })
+    .then(results => {
+      res.json(results);
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
+
 router.use('/', passport.authenticate('jwt', { session: false, failWithError: true }));
 
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/', (req, res, next) => {
-
+console.log('is this firing somehow>');
   const username = req.user.username;
   let filter ={username};
   let userId;
@@ -31,23 +53,23 @@ router.get('/', (req, res, next) => {
     });
 });
 
-router.get('/:id', (req, res, next) => {
-  const {id } =req.params;
-  const username = req.user.username;
-  let userId;
-  User.find({username})
-    .then ( (results) => {
-      return userId = results[0].id;
-    })
-    .then ( userId => {
-      return Product.findOne({ _id: id, userId}); })
-    .then(results => {
-      res.json(results);
-    })
-    .catch(err => {
-      next(err);
-    });
-});
+// router.get('/:id', (req, res, next) => {
+//   const {id } =req.params;
+//   const username = req.user.username;
+//   let userId;
+//   User.find({username})
+//     .then ( (results) => {
+//       return userId = results[0].id;
+//     })
+//     .then ( userId => {
+//       return Product.findOne({ _id: id, userId}); })
+//     .then(results => {
+//       res.json(results);
+//     })
+//     .catch(err => {
+//       next(err);
+//     });
+// });
 
 /* ========== POST ITEMS ========== */
 
