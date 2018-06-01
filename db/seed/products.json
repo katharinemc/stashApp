@@ -34,5 +34,57 @@
     "shade": "porcelain",
     "userId": "333333333333333333333302",
     "looksId": "111111111111111111111108"
+  },
+  {
+    "_id": "111111111111111111111120",
+    "brand": "Kevyn Aucoin",
+    "category" : "face",
+    "name": "Sensual Skin Enhancer",
+    "shade": "porcelain",
+    "userId": "333333333333333333333300"
+
+  }, {
+    "_id": "111111111111111111111121",
+    "brand": "NARs",
+    "category" : "Lipstick",
+    "name": "Sheer Lipstick",
+    "shade": "Dolce Vita",
+    "userId": "333333333333333333333300"
+  },
+  {
+    "_id": "111111111111111111111122",
+    "brand": "NARS",
+    "category" : "Lip Color",
+    "name": "Velvet Matte Lip Pencil",
+    "shade": "Dolce Vita",
+    "userId": "333333333333333333333300"
+  }, {
+    "_id": "111111111111111111111123",
+    "brand": "NARs",
+    "category" : "Lip Color",
+    "name": "Semi matte Lipstick",
+    "shade": "Heat Wave",
+    "userId": "333333333333333333333300"
+  },  {
+    "_id": "111111111111111111111124",
+    "brand": "Shiro",
+    "category" : "Lip Color",
+    "name": "Cages Through the Ages",
+    "shade": "Nic Cage Churning Butter One Crisp Thanksgiving Morn",
+    "userId": "333333333333333333333300"
+  },  {
+    "_id": "111111111111111111111125",
+    "brand": "Tarte",
+    "category" : "Blusher",
+    "name": "Amazonian Clay Blush",
+    "shade": "Exposed",
+    "userId": "333333333333333333333300"
+  }, {
+    "_id": "111111111111111111111126",
+    "brand": "TThe Balm",
+    "category" : "Highlight",
+    "name": " ",
+    "shade": "Mary-Lou Manizer",
+    "userId": "333333333333333333333300"
   }
 ]

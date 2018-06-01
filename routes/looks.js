@@ -75,15 +75,24 @@ router.post('/', (req, res, next) => {
 /* ========== DELETE ITEMS ========== */
 router.delete('/:id', (req, res, next) => {
   const { id } = req.body;
-  
-  Look.findByIdAndRemove(id)
+  const username = req.user.username;
+  let userId;
+
+  User.find({username})
+    .then ( (results) => {
+      return userId = results[0].id;
+    })
+    .then ( userId => {
+      return  Look.findOneAndRemove({_id:id, userId});})
     .then (results => {
-      res.json(results);
+      res.status(204).end();
     })
     .catch(err => {
       next(err);
     });
 });
+
+
 
 /* ========== PUT ITEMS ========== */
 router.put('/:id', (req, res, next) => {
