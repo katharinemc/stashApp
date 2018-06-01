@@ -111,7 +111,8 @@ router.put('/:id', (req, res, next) => {
         userId
       };
       console.log(updateObj)
-      return Look.findByIdAndUpdate(id, updateObj, {new: true}); })
+      return Look.findByIdAndUpdate(id, updateObj, {new: true})
+      .populate('products'); })
     .then (results => {
       console.log('update returns', results);
       res.json(results);
