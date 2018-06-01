@@ -95,6 +95,7 @@ router.put('/:id', (req, res, next) => {
   const { id } = req.params;
   const {name, productIds} = req.body;
   const username = req.user.username;
+  console.log(req.body)
 
   let userId;
  
@@ -106,11 +107,13 @@ router.put('/:id', (req, res, next) => {
     .then ( userId => {
       const updateObj = {
         name,
-        productIds,
+        products: productIds,
         userId
       };
+      console.log(updateObj)
       return Look.findByIdAndUpdate(id, updateObj, {new: true}); })
     .then (results => {
+      console.log('update returns', results);
       res.json(results);
     })
     .catch(err => {
