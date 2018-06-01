@@ -9,7 +9,6 @@ const User = require('../models/user');
 
 
 router.use('/', passport.authenticate('jwt', { session: false, failWithError: true }));
-console.log('successfully authd');
 
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/', (req, res, next) => {
@@ -56,15 +55,12 @@ router.post('/', (req, res, next) => {
   const {brand, name, shade, username, category} = req.body;
   let userId;
 
-  console.log('logging req body user', req.user);
 
   User.find({username:req.user.username})
     .then ( (results) => {
-      console.log(results[0].id);
       return userId = results[0].id;
     }) 
     .then ((userId) => {
-      console.log(userId);
       const obj = {
         brand,
         name,
@@ -72,12 +68,10 @@ router.post('/', (req, res, next) => {
         shade, 
         userId
       };
-      console.log('postpbj', obj);
       return   Product.create(obj);
 
     })
     .then(results => {
-      console.log(results);
       return res.json(results);
     })
     .catch(err => {
@@ -110,12 +104,11 @@ router.put('/:id', (req, res, next) => {
 
 /* ========== DELETE ITEMS ========== */
 router.delete('/:id', (req, res, next) => {
-console.log(req.params, req.user)
+(req.params, req.user);
   const { id } = req.params;
   const username = req.user.username;
   let userId;
 
-console.log('delete', username, id)
   User.find({username})
     .then ( (results) => {
       return userId = results[0].id;

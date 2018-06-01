@@ -129,7 +129,6 @@ router.post('/', (req, res, next) => {
     })
     .then (res => console.log(res))
     .catch (err => {
-      console.log('is this the err?', err);
       next(err);
     });
 });

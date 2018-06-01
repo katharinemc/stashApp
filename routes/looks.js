@@ -24,7 +24,6 @@ router.get('/', (req, res, next) => {
       return  Look.find({userId})
         .populate('products'); })
     .then(results => {
-      console.log(results[1]);
       res.json(results);
     })
     .catch(err => {
@@ -34,7 +33,6 @@ router.get('/', (req, res, next) => {
   
 router.get('/:id', (req, res, next) => {
   const {id } =req.params;
-  console.log('inside get by id', id);
   Look.findById({id})
     .then(results => {
       res.json(results);
@@ -52,7 +50,6 @@ router.post('/', (req, res, next) => {
   const username = req.user.username;
   let userId;
 
-  console.log('post username', username)
   User.find({username})
     .then ( (results) => {
       return userId = results[0].id;
@@ -61,7 +58,6 @@ router.post('/', (req, res, next) => {
       const obj = {
         userId, name, products
       };
-      console.log('post', obj)
 
       return Look.create(obj); })
     .then(results => {
@@ -97,13 +93,23 @@ router.delete('/:id', (req, res, next) => {
 /* ========== PUT ITEMS ========== */
 router.put('/:id', (req, res, next) => {
   const { id } = req.params;
-  const {name} = req.body;
-    
-  const updateObj = {
-    name
-  };
+  const {name, productIds} = req.body;
+  const username = req.user.username;
 
-  Look.findByIdAndUpdate(id, updateObj, {new: true})
+  let userId;
+ 
+
+  User.find({username})
+    .then ( (results) => {
+      return userId = results[0].id;
+    })
+    .then ( userId => {
+      const updateObj = {
+        name,
+        productIds,
+        userId
+      };
+      return Look.findByIdAndUpdate(id, updateObj, {new: true}); })
     .then (results => {
       res.json(results);
     })

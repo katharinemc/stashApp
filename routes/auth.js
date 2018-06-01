@@ -20,7 +20,6 @@ function createAuthToken (user) {
 }
 
 router.post('/login', localAuth, function (req, res) {
-  console.log('post login', req.body, res)
   const authToken = createAuthToken(req.body);
   return res.json({authToken});
 });
