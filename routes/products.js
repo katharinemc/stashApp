@@ -9,20 +9,33 @@ const User = require('../models/user');
 
 
 router.get('/:id', (req, res, next) => {
-  console.log('did the call get made?');
   const username  =req.params.id;
-let userId;
+  let userId;
+  const {brand, category, shade, name} = req.query;
+  let filter = {};
+ 
+  brand !== undefined ? filter.brand = brand : '';
+  category !== undefined ? filter.category = category : '';
+  shade !== undefined ? filter.shade = shade : '';
+  name !== undefined ? filter.name = name : '';
 
-console.log(username, req.params)
+ 
+
+
+
+  console.log('in GET:id', filter);
+
   User.find({username})
     .then ( (results) => {
-      console.log(results);
-      return userId = results[0].id;
+      return filter.userId = results[0].id;
     })
     .then ( userId => {
-      return Product.find({userId}); })
+      console.log('filter', filter);
+
+      return Product.find(filter); })
     .then(results => {
-      res.json(results);
+      console.log('final server resonse', results);
+      return   res.json(results);
     })
     .catch(err => {
       next(err);
@@ -34,10 +47,12 @@ router.use('/', passport.authenticate('jwt', { session: false, failWithError: tr
 
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/', (req, res, next) => {
-console.log('is this firing somehow>');
   const username = req.user.username;
   let filter ={username};
   let userId;
+
+  console.log('in GET', req.body, req.params);
+
   User.find({username})
     .then ( (results) => {
       return userId = results[0].id;
@@ -126,7 +141,7 @@ router.put('/:id', (req, res, next) => {
 
 /* ========== DELETE ITEMS ========== */
 router.delete('/:id', (req, res, next) => {
-(req.params, req.user);
+  (req.params, req.user);
   const { id } = req.params;
   const username = req.user.username;
   let userId;
