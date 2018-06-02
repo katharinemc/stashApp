@@ -25,7 +25,7 @@ router.get('/:id', (req, res, next) => {
     .then ( userId => {
 console.log(filter)
       Look.find(filter)
-        .then(results => {
+      .populate('products');        .then(results => {
           res.json(results);
         })
         .catch(err => {
