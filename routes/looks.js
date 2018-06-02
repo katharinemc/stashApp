@@ -8,6 +8,31 @@ const User = require('../models/user');
 
 const Look = require('../models/look');
 
+router.get('/:id', (req, res, next) => {
+  const username = req.params.id;
+  let filter ={};
+  console.log(username);
+
+  User.find({username})
+    .then ( (results) => {
+      return filter.userId = results[0].id;
+    })
+    .then ( userId => {
+
+      Look.find(filter)
+        .then(results => {
+          res.json(results);
+        })
+        .catch(err => {
+          next(err);
+        });
+    });
+
+});
+
+
+
+
 router.use('/', passport.authenticate('jwt', { session: false, failWithError: true }));
 
 
@@ -31,16 +56,6 @@ router.get('/', (req, res, next) => {
     });
 });
   
-router.get('/:id', (req, res, next) => {
-  const {id } =req.params;
-  Look.findById({id})
-    .then(results => {
-      res.json(results);
-    })
-    .catch(err => {
-      next(err);
-    });
-});
   
   
 /* ========== POST ITEMS ========== */
@@ -110,7 +125,7 @@ router.put('/:id', (req, res, next) => {
         userId
       };
       return Look.findByIdAndUpdate(id, updateObj, {new: true})
-      .populate('products'); })
+        .populate('products'); })
     .then (results => {
       res.json(results);
     })
