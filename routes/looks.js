@@ -11,14 +11,19 @@ const Look = require('../models/look');
 router.get('/:id', (req, res, next) => {
   const username = req.params.id;
   let filter ={};
-  console.log(username);
+  console.log('username is', username, 'query is', req.query);
+
+  const { name } = req.query;
+
+  name !== undefined ? filter.name =name :'';
+
 
   User.find({username})
     .then ( (results) => {
       return filter.userId = results[0].id;
     })
     .then ( userId => {
-
+console.log(filter)
       Look.find(filter)
         .then(results => {
           res.json(results);
