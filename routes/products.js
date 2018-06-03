@@ -11,15 +11,16 @@ const User = require('../models/user');
 router.get('/:id', (req, res, next) => {
   const username  =req.params.id;
   let userId;
-  const {brand, category, shade, name} = req.query;
+  const {brand, _id, category, shade, name} = req.query;
   let filter = {};
  
-console.log(req.query)
+  console.log('server query is', req.query);
 
   brand !== undefined ? filter.brand = brand : '';
   category !== undefined ? filter.category = category : '';
   shade !== undefined ? filter.shade = shade : '';
   name !== undefined ? filter.name = name : '';
+  _id !== undefined ? filter._id = _id : '';
 
   User.find({username})
     .then ( (results) => {
@@ -27,10 +28,10 @@ console.log(req.query)
     })
     .then ( userId => {
       console.log('filter', filter);
-
+      if(filter._id) { console.log('the query has an id', _id);}
       return Product.find(filter); })
     .then(results => {
-      console.log('final server resonse', results);
+      // console.log('final server resonse', results);
       return   res.json(results);
     })
     .catch(err => {
