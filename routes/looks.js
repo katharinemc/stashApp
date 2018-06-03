@@ -10,22 +10,29 @@ const Look = require('../models/look');
 
 router.get('/:id', (req, res, next) => {
   const username = req.params.id;
-  let filter ={};
+  let filter = {};
   console.log('username is', username, 'query is', req.query);
 
-  const { name } = req.query;
+  const {name, products} = req.query;
 
-  name !== undefined ? filter.name =name :'';
+  name !== undefined
+    ? filter.name = name
+    : '';
 
 
-  User.find({username})
-    .then ( (results) => {
+
+  User
+    .find({username})
+    .then((results) => {
       return filter.userId = results[0].id;
     })
-    .then ( userId => {
-console.log(filter)
-      Look.find(filter)
-      .populate('products');        .then(results => {
+    .then(userId => {  
+
+      console.log(filter)
+      Look
+        .find(filter)
+        .populate('products')
+        .then(results => {
           res.json(results);
         })
         .catch(err => {
@@ -35,24 +42,28 @@ console.log(filter)
 
 });
 
-
-
-
-router.use('/', passport.authenticate('jwt', { session: false, failWithError: true }));
-
+router.use('/', passport.authenticate('jwt', {
+  session: false,
+  failWithError: true
+}));
 
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/', (req, res, next) => {
   const username = req.user.username;
-  let filter ={username};
+  let filter = {
+    username
+  };
   let userId;
-  User.find({username})
-    .then ( (results) => {
+  User
+    .find({username})
+    .then((results) => {
       return userId = results[0].id;
     })
-    .then ( userId => {
-      return  Look.find({userId})
-        .populate('products'); })
+    .then(userId => {
+      return Look
+        .find({userId})
+        .populate('products');
+    })
     .then(results => {
       res.json(results);
     })
@@ -60,26 +71,28 @@ router.get('/', (req, res, next) => {
       next(err);
     });
 });
-  
-  
-  
+
 /* ========== POST ITEMS ========== */
-  
+
 router.post('/', (req, res, next) => {
-  const { name, products } = req.body;
+  const {name, products} = req.body;
   const username = req.user.username;
   let userId;
 
-  User.find({username})
-    .then ( (results) => {
+  User
+    .find({username})
+    .then((results) => {
       return userId = results[0].id;
     })
-    .then ( userId => {
+    .then(userId => {
       const obj = {
-        userId, name, products
+        userId,
+        name,
+        products
       };
 
-      return Look.create(obj); })
+      return Look.create(obj);
+    })
     .then(results => {
       res.json(results);
     })
@@ -87,59 +100,60 @@ router.post('/', (req, res, next) => {
       next(err);
     });
 });
-  
+
 /* ========== DELETE ITEMS ========== */
 router.delete('/:id', (req, res, next) => {
-  const { id } = req.body;
+  const {id} = req.body;
   const username = req.user.username;
   let userId;
 
-  User.find({username})
-    .then ( (results) => {
+  User
+    .find({username})
+    .then((results) => {
       return userId = results[0].id;
     })
-    .then ( userId => {
-      return  Look.findOneAndRemove({_id:id, userId});})
-    .then (results => {
-      res.status(204).end();
+    .then(userId => {
+      return Look.findOneAndRemove({_id: id, userId});
+    })
+    .then(results => {
+      res
+        .status(204)
+        .end();
     })
     .catch(err => {
       next(err);
     });
 });
-
-
 
 /* ========== PUT ITEMS ========== */
 router.put('/:id', (req, res, next) => {
-  const { id } = req.params;
+  const {id} = req.params;
   const {name, productIds} = req.body;
   const username = req.user.username;
 
   let userId;
- 
 
-  User.find({username})
-    .then ( (results) => {
+  User
+    .find({username})
+    .then((results) => {
       return userId = results[0].id;
     })
-    .then ( userId => {
+    .then(userId => {
       const updateObj = {
         name,
         products: productIds,
         userId
       };
-      return Look.findByIdAndUpdate(id, updateObj, {new: true})
-        .populate('products'); })
-    .then (results => {
+      return Look
+        .findByIdAndUpdate(id, updateObj, {new: true})
+        .populate('products');
+    })
+    .then(results => {
       res.json(results);
     })
     .catch(err => {
       next(err);
     });
 });
-  
-  
-
 
 module.exports = router;

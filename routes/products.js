@@ -14,16 +14,12 @@ router.get('/:id', (req, res, next) => {
   const {brand, category, shade, name} = req.query;
   let filter = {};
  
+console.log(req.query)
+
   brand !== undefined ? filter.brand = brand : '';
   category !== undefined ? filter.category = category : '';
   shade !== undefined ? filter.shade = shade : '';
   name !== undefined ? filter.name = name : '';
-
- 
-
-
-
-  console.log('in GET:id', filter);
 
   User.find({username})
     .then ( (results) => {
