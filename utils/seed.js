@@ -18,9 +18,9 @@ mongoose.connect(MONGODB_URI)
     console.log(seedProducts);
     return Promise.all([
    
-      Product.insertMany(seedProducts),
       Look.insertMany(seedLooks),    
-
+      Product.insertMany(seedProducts),
+      
       Promise.all(seedUsers.map(user => {
         console.log(user._id);
         return User.hashPassword(user.password)

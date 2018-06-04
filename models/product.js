@@ -18,6 +18,7 @@ const productSchema = mongoose.Schema({
 productSchema.index({ name: 1, brand: 1, shade: 1, category: 1, userId: 1}, { unique: true });
 
 productSchema.pre('save', function (next) {
+  console.log('is the problem here?');
   const query = {
     name: this.name,
     brand: this.brand,
@@ -36,7 +37,10 @@ productSchema.pre('save', function (next) {
     });
 });
 
+productSchema.remove(function (err, product) {
+  console.log('I am remove middleare', err, product);
 
+});
 
 productSchema.set('toObject', {
   transform: function (doc, ret) {
