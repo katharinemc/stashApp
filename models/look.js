@@ -27,12 +27,13 @@ lookSchema.pre('save', function (next) {
 
   this.constructor.find(query)
     .then(result => {
-      const err = new Error('duplicate key error collection');
-      err.status = 400;
+      if(result.length > 0)
+      {      const err = new Error('duplicate key error collection');
+        err.status = 400;
      
-      console.log('in find', err);
-      next(err);
-    })
+        console.log('in find', err);
+        next(err);
+      } next();    })
     .catch((err) => {
       console.log('model error', err);
     });
