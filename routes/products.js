@@ -14,7 +14,7 @@ router.get('/:id', (req, res, next) => {
   const {brand, _id, category, shade, name} = req.query;
   let filter = {};
  
-  console.log('server query is', req.query);
+  console.log('server query is', req.query, 'user is', req.user);
 
   brand !== undefined ? filter.brand = brand : '';
   category !== undefined ? filter.category = category : '';
@@ -28,14 +28,15 @@ router.get('/:id', (req, res, next) => {
       return filter.userId = results[0].id;
     })
     .then ( userId => {
-      console.log('filter', filter);
-      if(filter._id) { console.log('the query has an id', _id);}
       return Product.find(filter); })
     .then(results => {
       // console.log('final server resonse', results);
       return   res.json(results);
     })
     .catch(err => {
+      err.status = 404;
+    
+      console.log('gotcha!', err);
       next(err);
     });
 });

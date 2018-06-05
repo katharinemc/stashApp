@@ -29,18 +29,17 @@ productSchema.pre('save', function (next) {
 
   this.constructor.find(query)
     .then(result => {
-      // console.log(result);
-      next();
+      const err = new Error('duplicate key error collection');
+      err.status = 400;
+     
+      console.log('in find', err);
+      next(err);
     })
     .catch((err) => {
-      console.log(err);
+      console.log('model error', err);
     });
 });
 
-productSchema.remove(function (err, product) {
-  console.log('I am remove middleare', err, product);
-
-});
 
 productSchema.set('toObject', {
   transform: function (doc, ret) {
