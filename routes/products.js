@@ -88,7 +88,7 @@ router.get('/', (req, res, next) => {
 /* ========== POST ITEMS ========== */
 
 router.post('/', (req, res, next) => {
-  const {brand, name, shade, username, category} = req.body;
+  const {brand, name, shade, username, notes, category} = req.body;
   let userId;
 
 
@@ -101,6 +101,7 @@ router.post('/', (req, res, next) => {
         brand,
         name,
         category, 
+        notes,
         shade, 
         userId
       };
@@ -117,16 +118,18 @@ router.post('/', (req, res, next) => {
 
 /* ========== UPDATE ITEMS ========== */
 router.put('/:id', (req, res, next) => {
-  const {brand, name, shade, category} = req.body;
+  const {brand, name, shade, category, notes} = req.body;
   const { id } = req.params;
   const userId = req.user.id;
   const updateObj = {
     brand,
     name,
+    notes,
     category, 
     shade, 
     userId
   };
+  console.log(updateObj)
 
   Product.findByIdAndUpdate(id, updateObj, {new: true})
     .then (results => {
