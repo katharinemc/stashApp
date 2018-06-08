@@ -11,7 +11,6 @@ const Look = require('../models/look');
 router.get('/:id', (req, res, next) => {
   const username = req.params.id;
   let filter = {};
-  console.log('username is', username, 'query is', req.query);
 
   const {name, products} = req.query;
 
@@ -19,16 +18,12 @@ router.get('/:id', (req, res, next) => {
     ? filter.name = name
     : '';
 
-
-
   User
     .find({username})
     .then((results) => {
       return filter.userId = results[0].id;
     })
     .then(userId => {  
-
-      console.log(filter)
       Look
         .find(filter)
         .populate('products')

@@ -15,14 +15,12 @@ const seedLooks = require('../db/seed/looks');
 mongoose.connect(MONGODB_URI)
   .then(() => mongoose.connection.db.dropDatabase())
   .then(() => {
-    console.log(seedProducts);
     return Promise.all([
    
       Look.insertMany(seedLooks),    
       Product.insertMany(seedProducts),
       
       Promise.all(seedUsers.map(user => {
-        console.log(user._id);
         return User.hashPassword(user.password)
           .then(hash => {
             const newUser = {
@@ -31,7 +29,6 @@ mongoose.connect(MONGODB_URI)
               password: hash,
               userEmail: user.userEmail
             };
-            console.log(newUser);
             return User.insertMany(newUser);
               // .then ( () => {
               //   return User.createIndexes();

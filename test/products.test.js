@@ -66,7 +66,7 @@ describe('StashApp',  function () {
         .set('Authorization', `Bearer ${token}`);
 
       return Promise.all([dbPromise, apiPromise])
-        .then(([data, res]) => { console.log('I database query', data.body);
+        .then(([data, res]) => { 
           expect(res).to.have.status(200);
           expect(res).to.be.json;
           expect(res.body).to.be.a('array');
@@ -158,7 +158,6 @@ describe('StashApp',  function () {
       return Product.findOne({userId: user.id})
         .then(_data => {
           data = _data;
-          console.log(data);
           return chai.request(app)
             .put(`/api/Products/${data.id}`)
             .set('Authorization', `Bearer ${token}`)

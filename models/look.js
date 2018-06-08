@@ -19,7 +19,6 @@ lookSchema.set('toObject', {
 });
 
 lookSchema.pre('save', function (next) {
-  console.log('is the problem here?');
   const query = {
     name: this.name,
     userId: this.userId
@@ -31,11 +30,10 @@ lookSchema.pre('save', function (next) {
       {      const err = new Error('duplicate key error collection');
         err.status = 400;
      
-        console.log('in find', err);
         next(err);
       } next();    })
     .catch((err) => {
-      console.log('model error', err);
+      next(err); 
     });
 });
 
